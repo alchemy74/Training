@@ -128,3 +128,5 @@ D:\Users\Yen\Documents\GitHub\Training\Training02\Teach.Web\bin\Microsoft.Owin.x
 D:\Users\Yen\Documents\GitHub\Training\Training02\Teach.Web\bin\Microsoft.Owin.Host.SystemWeb.xml
 D:\Users\Yen\Documents\GitHub\Training\Training02\Teach.Web\bin\Microsoft.Owin.Security.xml
 D:\Users\Yen\Documents\GitHub\Training\Training02\Teach.Web\bin\Newtonsoft.Json.xml
+D:\Users\Yen\Documents\GitHub\Training\Training02\Teach.Web\bin\Autofac.dll
+D:\Users\Yen\Documents\GitHub\Training\Training02\Teach.Web\bin\Autofac.xml

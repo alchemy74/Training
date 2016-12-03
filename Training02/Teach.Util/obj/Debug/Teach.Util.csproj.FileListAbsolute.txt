@@ -23,6 +23,6 @@ D:\Users\Yen\Documents\GitHub\Training\Training02\Teach.Util\bin\Debug\TEC.Core.
 D:\Users\Yen\Documents\GitHub\Training\Training02\Teach.Util\bin\Debug\zh\TEC.Core.resources.dll
 D:\Users\Yen\Documents\GitHub\Training\Training02\Teach.Util\bin\Debug\zh\TEC.Core.Portable.resources.dll
 D:\Users\Yen\Documents\GitHub\Training\Training02\Teach.Util\bin\Debug\zh\TEC.Core.Transactions.resources.dll
-D:\Users\Yen\Documents\GitHub\Training\Training02\Teach.Util\obj\Debug\Teach.Util.csprojResolveAssemblyReference.cache
 D:\Users\Yen\Documents\GitHub\Training\Training02\Teach.Util\obj\Debug\Teach.Util.dll
 D:\Users\Yen\Documents\GitHub\Training\Training02\Teach.Util\obj\Debug\Teach.Util.pdb
+D:\Users\Yen\Documents\GitHub\Training\Training02\Teach.Util\obj\Debug\Teach.Util.csprojResolveAssemblyReference.cache

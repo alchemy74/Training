@@ -6,14 +6,16 @@ using System.Text;
 using System.Threading.Tasks;
 using TEC.Core.Transactions.EnlistmentNotifications;
 using Teach.Util.Extensions;
+using Teach.Core.Converters.Bank;
+using Autofac;
 
 namespace Teach.Core.Task
 {
-    internal class LoginTransactionTask : EnlistmentNotificationBase
+    public class LoginTransactionTask : EnlistmentNotificationBase
     {
         protected override void executeInternal()
         {
-            BankUIData bankUIData = new BankUIData();
+            BankUIData bankUIData = AutofacConfig.CoreContainer.Resolve<BankUIData>();
             bankUIData.setLastLoginDate(this.AccountId, this.LoginDateTime);
         }
         protected override void rollbackInternal()

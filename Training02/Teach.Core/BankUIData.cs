@@ -9,47 +9,51 @@ using Teach.Core.Infos;
 using Teach.Core.Task;
 using TEC.Core.Transactions;
 using Teach.Util.Extensions;
+using Teach.Core.Converters;
+using Autofac;
 
 namespace Teach.Core
 {
     public class BankUIData
-    {
+    { 
+        public BankUIData(BankAccountConverter bankAccountConverter, BankUserConverter bankUserConverter)
+        {
+            this.BankAccountConverter = bankAccountConverter;
+            this.BankUserConverter = bankUserConverter;
+        }
         /// <summary>
         /// 測試用的 FOR AutoMapper
         /// </summary>
         public void testAutoMapper()
         {
-            BankAccountConverter bankAccountConverter = new BankAccountConverter();
-            BankUserConverter bankUserConverter = new BankUserConverter();
-
-            bankAccountConverter.convertBack(
-                bankAccountConverter.convert(new Adapter.Entites.BankAccountEntity()
-                {
-                    Amount = 50m,
-                    BankAccountId = Guid.NewGuid(),
-                    BankUserId = Guid.NewGuid()
-                }));
-            bankUserConverter.convertBack(
-                bankUserConverter.convert(new Adapter.Entites.BankUserEntity()
-                {
-                    UserName = "Antony",
-                    LastLoginDate = null,
-                    BankUserId = Guid.NewGuid()
-                }));
-            bankAccountConverter.convertBack(
-               bankAccountConverter.convert(new Adapter.Entites.BankAccountEntity()
-               {
-                   Amount = 50m,
-                   BankAccountId = Guid.NewGuid(),
-                   BankUserId = Guid.NewGuid()
-               }));
-            bankUserConverter.convertBack(
-                bankUserConverter.convert(new Adapter.Entites.BankUserEntity()
-                {
-                    UserName = "Antony",
-                    LastLoginDate = null,
-                    BankUserId = Guid.NewGuid()
-                }));
+            this.BankAccountConverter.convertBack(
+             this.BankAccountConverter.convert(new Adapter.Entites.BankAccountEntity()
+             {
+                 Amount = 50m,
+                 BankAccountId = Guid.NewGuid(),
+                 BankUserId = Guid.NewGuid()
+             }));
+            this.BankUserConverter.convertBack(
+                   this.BankUserConverter.convert(new Adapter.Entites.BankUserEntity()
+                   {
+                       UserName = "Antony",
+                       LastLoginDate = null,
+                       BankUserId = Guid.NewGuid()
+                   }));
+            this.BankAccountConverter.convertBack(
+           this.BankAccountConverter.convert(new Adapter.Entites.BankAccountEntity()
+           {
+               Amount = 50m,
+               BankAccountId = Guid.NewGuid(),
+               BankUserId = Guid.NewGuid()
+           }));
+            this.BankUserConverter.convertBack(
+            this.BankUserConverter.convert(new Adapter.Entites.BankUserEntity()
+            {
+                UserName = "Antony",
+                LastLoginDate = null,
+                BankUserId = Guid.NewGuid()
+            }));
         }
         /// <summary>
         /// 
@@ -61,9 +65,8 @@ namespace Teach.Core
             using (TransactionScope transactionScope = new TransactionScope())
             {
                 UIDataConfig.DefaultDataAdapterFactory.BankUserDb.addBankUser(new BankUserConverter().convertBack(bankUserInfo));
-                BankAccountConverter bankAccountConverter = new BankAccountConverter();
                 bankAccountInfoCollection
-                    .Select(t => bankAccountConverter.convertBack(t))
+                    .Select(t => this.BankAccountConverter.convertBack(t))
                     .ToList()
                     .ForEach(t => UIDataConfig.DefaultDataAdapterFactory.BankAccountDb.addBankAccount(t));
                 transactionScope.Complete();
@@ -98,5 +101,7 @@ namespace Teach.Core
                 transactionScope.Complete();
             }
         }
+        private BankAccountConverter BankAccountConverter { set; get; }
+        private BankUserConverter BankUserConverter { set; get; }
     }
 }

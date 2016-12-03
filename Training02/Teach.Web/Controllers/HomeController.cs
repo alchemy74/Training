@@ -8,8 +8,10 @@ using System.Web;
 using System.Web.Mvc;
 using Teach.Core;
 using Teach.Core.Infos;
+using Teach.Core.Task;
 using Teach.Web.Models.Home;
 using TEC.Core.Text.RandomText;
+using TEC.Core.Transactions;
 
 namespace Teach.Web.Controllers
 {
@@ -47,6 +49,15 @@ namespace Teach.Web.Controllers
         // GET: Home
         public ActionResult Index()
         {
+            //SequentialTransactionManager sequentialTransactionManager = new SequentialTransactionManager();
+            //sequentialTransactionManager.EnlistmentNotificationCollection.Add(new LoginTransactionTask());
+            ////sequentialTransactionManager.setContextValue("accountId", accountId);
+            ////sequentialTransactionManager.setContextValue("loginDateTime", DateTime.Now);
+            //using (TransactionScope transactionScope = new TransactionScope())
+            //{
+            //    sequentialTransactionManager.enlistVolatile();
+            //    transactionScope.Complete();
+            //}
             return View(new IndexModel()
             {
                 TimerManager = TimerManagerConfig.TimerManager

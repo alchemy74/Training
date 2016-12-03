@@ -43,3 +43,5 @@ D:\Users\Yen\Documents\GitHub\Training\Training02\Teach.Core\bin\Debug\zh\TEC.Co
 D:\Users\Yen\Documents\GitHub\Training\Training02\Teach.Core\obj\Debug\Teach.Core.csprojResolveAssemblyReference.cache
 D:\Users\Yen\Documents\GitHub\Training\Training02\Teach.Core\obj\Debug\Teach.Core.dll
 D:\Users\Yen\Documents\GitHub\Training\Training02\Teach.Core\obj\Debug\Teach.Core.pdb
+D:\Users\Yen\Documents\GitHub\Training\Training02\Teach.Core\bin\Debug\Autofac.dll
+D:\Users\Yen\Documents\GitHub\Training\Training02\Teach.Core\bin\Debug\Autofac.xml
