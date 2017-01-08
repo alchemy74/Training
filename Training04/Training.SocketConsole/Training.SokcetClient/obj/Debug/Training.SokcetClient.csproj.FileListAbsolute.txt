@@ -20,3 +20,5 @@ D:\Users\Yen\Documents\GitHub\Training\Training04\Training.SocketConsole\Trainin
 D:\Users\Yen\Documents\GitHub\Training\Training04\Training.SocketConsole\Training.SokcetClient\obj\Debug\Training.SokcetClient.csprojResolveAssemblyReference.cache
 D:\Users\Yen\Documents\GitHub\Training\Training04\Training.SocketConsole\Training.SokcetClient\obj\Debug\Training.SokcetClient.exe
 D:\Users\Yen\Documents\GitHub\Training\Training04\Training.SocketConsole\Training.SokcetClient\obj\Debug\Training.SokcetClient.pdb
+D:\Users\Yen\Documents\GitHub\Training\Training04\Training.SocketConsole\Training.SokcetClient\bin\Debug\Newtonsoft.Json.dll
+D:\Users\Yen\Documents\GitHub\Training\Training04\Training.SocketConsole\Training.SokcetClient\bin\Debug\Newtonsoft.Json.xml

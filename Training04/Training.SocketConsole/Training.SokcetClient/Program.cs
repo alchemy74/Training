@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -38,10 +39,15 @@ namespace Training.SokcetClient
             while (true)
             {
                 string data = Console.ReadLine();
+                ;
                 socketClient.ReadOnlyConnectedTokenIdCollection.ToList().ForEach(tokenId =>
                 {
-                    //傳送訊息至伺服器
-                    Console.WriteLine($"已佇列傳送資料至 Token: {tokenId}，發送的訊息 Token 為:{socketClient.sendDataAsync(tokenId, System.Text.Encoding.UTF8.GetBytes(data)).Result}");
+                    socketClient.sendDataAsync(tokenId, System.Text.Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new SocketCore.SocketsEvent.ReceivedMessageEvent()
+                    {
+                        EventArgument = data
+                    })));
+                    ////傳送訊息至伺服器
+                    //Console.WriteLine($"已佇列傳送資料至 Token: {tokenId}，發送的訊息 Token 為:{socketClient.sendDataAsync(tokenId, System.Text.Encoding.UTF8.GetBytes(data)).Result}");
                 });
             }
         }

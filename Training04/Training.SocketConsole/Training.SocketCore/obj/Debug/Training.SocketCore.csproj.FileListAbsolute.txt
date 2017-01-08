@@ -17,3 +17,6 @@ D:\Users\Yen\Documents\GitHub\Training\Training04\Training.SocketConsole\Trainin
 D:\Users\Yen\Documents\GitHub\Training\Training04\Training.SocketConsole\Training.SocketCore\bin\Debug\zh\TEC.Core.Sockets.resources.dll
 D:\Users\Yen\Documents\GitHub\Training\Training04\Training.SocketConsole\Training.SocketCore\obj\Debug\Training.SocketCore.dll
 D:\Users\Yen\Documents\GitHub\Training\Training04\Training.SocketConsole\Training.SocketCore\obj\Debug\Training.SocketCore.pdb
+D:\Users\Yen\Documents\GitHub\Training\Training04\Training.SocketConsole\Training.SocketCore\obj\Debug\Training.SocketCore.csprojResolveAssemblyReference.cache
+D:\Users\Yen\Documents\GitHub\Training\Training04\Training.SocketConsole\Training.SocketCore\bin\Debug\Newtonsoft.Json.dll
+D:\Users\Yen\Documents\GitHub\Training\Training04\Training.SocketConsole\Training.SocketCore\bin\Debug\Newtonsoft.Json.xml

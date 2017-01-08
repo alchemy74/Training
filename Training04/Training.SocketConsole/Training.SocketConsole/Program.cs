@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 using TEC.Core.Sockets.Core;
 using TEC.Core.Sockets.Server;
 using Training.SocketCore;
+using Training.SocketCore.SocketsEvent;
 
 namespace Training.SocketConsole
 {
@@ -114,6 +116,10 @@ namespace Training.SocketConsole
         }
         private static void SocketListener_OnDataReceived(object sender, DataReceivedEventArgs e)
         {
+            JObject jObject = JObject.Parse(System.Text.Encoding.UTF8.GetString(e.DataHolder.Data));
+            string args = jObject.SelectToken("EventArgument").ToString();
+            ReceivedMessageEventHandler receivedMessageEventHandler = new ReceivedMessageEventHandler();
+            receivedMessageEventHandler.handleEvent(sender as SocketListener<DataHolder>, e.TokenId, args);
             Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")}- 已接收到一次完整訊息，資料: {(e.DataHolder.Data == null ? "尚未建立" : System.Text.Encoding.UTF8.GetString(e.DataHolder.Data))}，來源:{e.RemoteEndPoint}");
         }
         private static void SocketListener_OnClosingClientSocket(object sender, DataHoldingEventArgs e)
