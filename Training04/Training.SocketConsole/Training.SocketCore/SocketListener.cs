@@ -1,10 +1,15 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using TEC.Core.Collections;
 using TEC.Core.Sockets.Server;
+using Training.SocketCore.SocketsEvent;
+using Training.SocketCore.SocketsEvent.Server;
 
 namespace Training.SocketCore
 {
@@ -21,6 +26,7 @@ namespace Training.SocketCore
             {
                 throw new ArgumentNullException(nameof(ipEndPoint));
             }
+            this.RegisteredEventHandlers = new ThreadSafeObservableCollection<EventHandlerBase>();
             Mediator mediator = new Mediator();
             SocketServerSettingCollection socketSettingCollection = new SocketServerSettingCollection();
             socketSettingCollection[SocketServerSettingEnum.BackLog] = 100;
@@ -30,7 +36,35 @@ namespace Training.SocketCore
             socketSettingCollection[SocketServerSettingEnum.MaxProcessingOperationCount] = 3000;
             socketSettingCollection[SocketServerSettingEnum.OperationBufferSize] = 25;
             this.SocketListenerInernal = new SocketListener<DataHolder>(mediator, socketSettingCollection, false);
+            this.SocketListenerInernal.OnDataReceived += this.SocketListenerInernal_OnDataReceived;
+            this.SocketListenerInernal.inital();
+        }
+
+        private void SocketListenerInernal_OnDataReceived(object sender, TEC.Core.Sockets.Core.DataReceivedEventArgs e)
+        {
+            JObject jObject = JObject.Parse(System.Text.Encoding.UTF8.GetString(e.DataHolder.Data));
+            string eventName = jObject.SelectToken("EventName").ToString();
+            EventType eventType = jObject.SelectToken("EventType").ToObject<EventType>();
+            List<EventHandlerBase> eventHandlerBaseToExecute = this.RegisteredEventHandlers
+                 .Where(t => t.EventType == eventType && String.Compare(t.EventName, eventName, false) == 0)
+                 .ToList();
+            eventHandlerBaseToExecute.ForEach(t => t.handleEvent(this, e.TokenId, jObject.SelectToken("EventArgument")));
+        }
+
+        /// <summary>
+        /// 非同步傳送資料
+        /// </summary>
+        /// <param name="tokenId"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public Task<int> sendDataAsync(int tokenId, string data)
+        {
+            return this.SocketListenerInernal.sendDataAsync(tokenId, System.Text.Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new SocketCore.SocketsEvent.ReceivedMessageEvent()
+            {
+                EventArgument = data
+            })));
         }
         private SocketListener<DataHolder> SocketListenerInernal { set; get; }
+        public ThreadSafeObservableCollection<EventHandlerBase> RegisteredEventHandlers { private set; get; }
     }
 }

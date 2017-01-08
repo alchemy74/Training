@@ -9,10 +9,10 @@ using TEC.Core.Sockets.Server;
 
 namespace Training.SocketCore.SocketsEvent.Server
 {
-    public class ReceivedMessageEventHandler : EventHandlerBase
+    public class AuthenticateEventHandler : EventHandlerBase
     {
         public override EventType EventType { get; } = EventType.System;
-        public override string EventName { get; } = nameof(ReceivedMessageEvent);
+        public override string EventName { get; } = nameof(AuthenticateEvent);
         public override void handleEvent(SocketListener socketListener, int tokenId, JToken @event)
         {
             socketListener.sendDataAsync(tokenId, @event.ToString());
