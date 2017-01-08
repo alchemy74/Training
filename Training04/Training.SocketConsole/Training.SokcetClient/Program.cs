@@ -39,10 +39,9 @@ namespace Training.SokcetClient
             while (true)
             {
                 string data = Console.ReadLine();
-                ;
                 socketClient.ReadOnlyConnectedTokenIdCollection.ToList().ForEach(tokenId =>
                 {
-                    socketClient.sendDataAsync(tokenId, System.Text.Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new SocketCore.SocketsEvent.ReceivedMessageEvent()
+                    socketClient.sendDataAsync(tokenId, System.Text.Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new SocketCore.SocketsEvent.AuthenticateEvent()
                     {
                         EventArgument = data
                     })));

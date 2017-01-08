@@ -10,6 +10,6 @@ namespace Training.SocketCore.SocketsEvent
     {
         public EventType EventType { get; } = EventType.System;
         public string EventName { get; } = nameof(AuthenticateEvent);
-        public string Token { set; get; }
+        public string EventArgument { set; get; }
     }
 }

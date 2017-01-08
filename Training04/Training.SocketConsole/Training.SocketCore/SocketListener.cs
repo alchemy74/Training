@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -27,6 +28,7 @@ namespace Training.SocketCore
                 throw new ArgumentNullException(nameof(ipEndPoint));
             }
             this.RegisteredEventHandlers = new ThreadSafeObservableCollection<EventHandlerBase>();
+            this.ConnectedMemberCollection = new ThreadSafeObservableCollection<Tuple<int, string>>();
             Mediator mediator = new Mediator();
             SocketServerSettingCollection socketSettingCollection = new SocketServerSettingCollection();
             socketSettingCollection[SocketServerSettingEnum.BackLog] = 100;
@@ -37,7 +39,29 @@ namespace Training.SocketCore
             socketSettingCollection[SocketServerSettingEnum.OperationBufferSize] = 25;
             this.SocketListenerInernal = new SocketListener<DataHolder>(mediator, socketSettingCollection, false);
             this.SocketListenerInernal.OnDataReceived += this.SocketListenerInernal_OnDataReceived;
+            ((INotifyCollectionChanged)this.SocketListenerInernal.ReadOnlyConnectedTokenIdCollection).CollectionChanged += this.SocketListener_CollectionChanged;
             this.SocketListenerInernal.inital();
+        }
+
+        private void SocketListener_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                int tokenId = (int)e.OldItems[0];
+                Tuple<int, string> tupleToRemove;
+                lock (this.ConnectedMemberCollection)
+                {
+                    tupleToRemove = this.ConnectedMemberCollection.Where(t => t.Item1 == tokenId).FirstOrDefault();
+                }
+                 this.ConnectedMemberCollection.Where(t => t.Item1 == tokenId).FirstOrDefault();
+                if (tupleToRemove != null)
+                {
+                    lock (this.ConnectedMemberCollection)
+                    {
+                        this.ConnectedMemberCollection.Remove(tupleToRemove);
+                    }
+                }
+            }
         }
 
         private void SocketListenerInernal_OnDataReceived(object sender, TEC.Core.Sockets.Core.DataReceivedEventArgs e)
@@ -64,7 +88,12 @@ namespace Training.SocketCore
                 EventArgument = data
             })));
         }
+
         private SocketListener<DataHolder> SocketListenerInernal { set; get; }
         public ThreadSafeObservableCollection<EventHandlerBase> RegisteredEventHandlers { private set; get; }
+        /// <summary>
+        /// 設定或取得已經連線的會員資訊集合
+        /// </summary>
+        public ThreadSafeObservableCollection<Tuple<int, string>> ConnectedMemberCollection { private set; get; }
     }
 }
