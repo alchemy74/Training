@@ -16,27 +16,45 @@ namespace Training.SokcetClient
 {
     class Program
     {
+        private static object connectData = new object();
         public static void Main()
         {
             Program.TimerManager = new TimerManager();
             SocketClient socketClient = new SocketClient();
-            Program.KeepConnectionTimerEvent = new KeepConnectionTimerEvent(socketClient, new IPEndPoint(IPAddress.Parse("127.0.0.1"), 9527));
-            Program.TimersTimerStorage = Program.TimerManager.createTimersTimer(Program.KeepConnectionTimerEvent,
-                  new TimePeriodCollection(new[] { new TimeRange(DateTime.Now, DateTime.MaxValue) }), null, 2000, NextTimeEvaluationType.ExecutionEndTime);
-            Program.TimersTimerStorage.start();
+            Program.TimerManager.createTimersTimer(new KeepConnectionTimerEvent(()=>!Program.TokenId.HasValue,
+                ()=> socketClient.connectToServer(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 9527), Program.connectData)),
+                new TimePeriodCollection(new[] { new TimeRange(DateTime.Now, DateTime.MaxValue) }),
+                null, 2000, NextTimeEvaluationType.ExecutionEndTime).start();
+            socketClient.OnConnected += Program.SocketClient_OnConnected;
+            socketClient.OnDisconnected += Program.SocketClient_OnDisconnected;
             while (true)
             {
                 string data = Console.ReadLine();
-                if (!Program.KeepConnectionTimerEvent.TokenId.HasValue)
+                if (!Program.TokenId.HasValue)
                 {
                     Console.WriteLine("Socket server has not connected.");
                     continue;
                 }
-                socketClient.sendDataAsync(Program.KeepConnectionTimerEvent.TokenId.Value, data);
+                socketClient.sendDataAsync(Program.TokenId.Value, data);
             }
         }
 
+        private static void SocketClient_OnDisconnected(object sender, SocketCore.EventArguments.DisconnectedSocketEventArgs e)
+        {
+            if (Program.TokenId.HasValue && e.TokenId == Program.TokenId)
+            {
+                Program.TokenId = null;
+            }
+        }
 
+        private static void SocketClient_OnConnected(object sender, ConnectedEventArgs e)
+        {
+            if (e.ConnectOperationUserToken.Data == Program.connectData)
+            {
+                SocketClient socketClient = sender as SocketClient;
+                Program.TokenId = e.DataHoldingUserToken.TokenId;
+            }
+        }
 
         //private static void SocketClient_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         //{
@@ -46,9 +64,7 @@ namespace Training.SokcetClient
         //        socketClient.sendDataAsync(socketClient.TokenId.Value, "123");
         //    }
         //}
-
+        private static int? TokenId { set; get; }
         private static TimerManager TimerManager { set; get; }
-        private static KeepConnectionTimerEvent KeepConnectionTimerEvent { set; get; }
-        private static TimersTimerStorage TimersTimerStorage { set; get; }
     }
 }

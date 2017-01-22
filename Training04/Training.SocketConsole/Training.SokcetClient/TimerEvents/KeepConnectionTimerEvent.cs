@@ -12,55 +12,30 @@ namespace Training.SokcetClient.TimerEvents
 {
     public class KeepConnectionTimerEvent : ITimerEvent
     {
-        private object connectData = new object();
-        public KeepConnectionTimerEvent(SocketClient socketClient, IPEndPoint ipEndPoint)
+        public KeepConnectionTimerEvent(Func<bool> getShouldReconnectFunc, Action reconnectAction)
         {
-            if (socketClient == null)
-            {
-                throw new ArgumentNullException(nameof(socketClient));
-            }
-            if (ipEndPoint == null)
-            {
-                throw new ArgumentNullException(nameof(ipEndPoint));
-            }
-            this.SocketClient = socketClient;
-            this.SocketClient.OnConnected += this.SocketClient_OnConnected;
-            this.SocketClient.OnDisconnected += this.SocketClient_OnDisconnected;
-            this.IPEndPoint = ipEndPoint;
-        }
-        private void SocketClient_OnDisconnected(object sender, SocketCore.EventArguments.DisconnectedSocketEventArgs e)
-        {
-            if (this.TokenId.HasValue && e.TokenId == this.TokenId)
-            {
-                this.TokenId = null;
-            }
+            this.GetShouldReconnectFunc = getShouldReconnectFunc;
+            this.ReconnectAction = reconnectAction;
         }
 
-        private void SocketClient_OnConnected(object sender, ConnectedEventArgs e)
-        {
-            if (e.ConnectOperationUserToken.Data == this.connectData)
-            {
-                SocketClient socketClient = sender as SocketClient;
-                this.TokenId = e.DataHoldingUserToken.TokenId;
-            }
-        }
         public void execute()
         {
-            if (!this.TokenId.HasValue)
+            if (this.GetShouldReconnectFunc())
             {
-                this.SocketClient.connectToServer(this.IPEndPoint, this.connectData);
+                this.ReconnectAction();
             }
         }
         public void Dispose()
         {
-            if (this.SocketClient != null)
-            {
-                this.SocketClient.OnConnected -= this.SocketClient_OnConnected;
-                this.SocketClient.OnDisconnected -= this.SocketClient_OnDisconnected;
-            }
+
         }
-        private SocketClient SocketClient { set; get; }
-        private IPEndPoint IPEndPoint { set; get; }
-        public int? TokenId { set; get; }
+        /// <summary>
+        /// 設定或取得 取得是否應該重新連線的方法封裝
+        /// </summary>
+        private Func<bool> GetShouldReconnectFunc { set; get; }
+        /// <summary>
+        /// 設定或取得 重新連線的方法
+        /// </summary>
+        private Action ReconnectAction { set; get; }
     }
 }
