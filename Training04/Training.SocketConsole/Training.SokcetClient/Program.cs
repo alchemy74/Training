@@ -1,38 +1,42 @@
-﻿using Newtonsoft.Json;
+﻿using Itenso.TimePeriod;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using TEC.Core.Scheduler.Timers;
 using TEC.Core.Sockets.Client;
 using TEC.Core.Sockets.Core;
 using Training.SocketCore;
+using Training.SokcetClient.TimerEvents;
 
 namespace Training.SokcetClient
 {
     class Program
     {
-        private static object connectData = new object();
         public static void Main()
         {
+            Program.TimerManager = new TimerManager();
             SocketClient socketClient = new SocketClient();
-            socketClient.OnConnected += Program.SocketClient_OnConnected;
-            //socketClient.PropertyChanged += SocketClient_PropertyChanged;
-            socketClient.connectToServer(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 9527), Program.connectData);
-            //socketClient.sendDataAsync(socketClient.TokenId.Value, "123");
-            Console.ReadKey();
-        }
-
-        private static void SocketClient_OnConnected(object sender, ConnectedEventArgs e)
-        {
-            if(e.ConnectOperationUserToken.Data == Program.connectData)
+            Program.KeepConnectionTimerEvent = new KeepConnectionTimerEvent(socketClient, new IPEndPoint(IPAddress.Parse("127.0.0.1"), 9527));
+            Program.TimersTimerStorage = Program.TimerManager.createTimersTimer(Program.KeepConnectionTimerEvent,
+                  new TimePeriodCollection(new[] { new TimeRange(DateTime.Now, DateTime.MaxValue) }), null, 2000, NextTimeEvaluationType.ExecutionEndTime);
+            Program.TimersTimerStorage.start();
+            while (true)
             {
-                SocketClient socketClient = sender as SocketClient;
-                Program.TokenId = e.DataHoldingUserToken.TokenId;
-                socketClient.sendDataAsync(e.DataHoldingUserToken.TokenId, "789");
+                string data = Console.ReadLine();
+                if (!Program.KeepConnectionTimerEvent.TokenId.HasValue)
+                {
+                    Console.WriteLine("Socket server has not connected.");
+                    continue;
+                }
+                socketClient.sendDataAsync(Program.KeepConnectionTimerEvent.TokenId.Value, data);
             }
         }
+
+
 
         //private static void SocketClient_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         //{
@@ -42,6 +46,9 @@ namespace Training.SokcetClient
         //        socketClient.sendDataAsync(socketClient.TokenId.Value, "123");
         //    }
         //}
-        private static int? TokenId { set; get; }
+
+        private static TimerManager TimerManager { set; get; }
+        private static KeepConnectionTimerEvent KeepConnectionTimerEvent { set; get; }
+        private static TimersTimerStorage TimersTimerStorage { set; get; }
     }
 }

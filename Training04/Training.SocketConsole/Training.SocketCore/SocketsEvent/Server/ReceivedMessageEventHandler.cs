@@ -15,7 +15,8 @@ namespace Training.SocketCore.SocketsEvent.Server
         public override string EventName { get; } = nameof(ReceivedMessageEvent);
         public override void handleEvent(SocketListener socketListener, int tokenId, JToken @event)
         {
-            socketListener.sendDataAsync(tokenId, @event.ToString());
+            
+            Console.WriteLine(@event);
         }
     }
 }

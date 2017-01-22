@@ -15,16 +15,7 @@ namespace Training.SocketCore.SocketsEvent.Server
         public override string EventName { get; } = nameof(AuthenticateEvent);
         public override void handleEvent(SocketListener socketListener, int tokenId, JToken @event)
         {
-            Tuple<int, string> tuple;
-            lock (socketListener.ConnectedMemberCollection)
-            {
-                tuple = socketListener.ConnectedMemberCollection.Where(t => t.Item1 == tokenId).FirstOrDefault();
-                if (tuple != null)
-                {
-                    socketListener.ConnectedMemberCollection.Remove(tuple);
-                }
-                socketListener.ConnectedMemberCollection.Add(new Tuple<int, string>(tokenId, @event.ToString()));
-            }
+            
         }
     }
 }

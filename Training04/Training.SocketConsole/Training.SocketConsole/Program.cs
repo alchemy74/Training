@@ -20,7 +20,6 @@ namespace Training.SocketConsole
             SocketListener socketListener = new SocketListener(new IPEndPoint(IPAddress.Any, 9527));
             socketListener.RegisteredEventHandlers.Add(new ReceivedMessageEventHandler());
             socketListener.RegisteredEventHandlers.Add(new AuthenticateEventHandler());
-            socketListener.ConnectedMemberCollection.CollectionChanged += Program.ConnectedMemberCollection_CollectionChanged;
             //socketListener.OnDataReceived += Program.SocketListener_OnDataReceived;
             Console.ReadLine();
         }

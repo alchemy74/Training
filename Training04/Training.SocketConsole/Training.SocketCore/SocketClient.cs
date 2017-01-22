@@ -1,12 +1,14 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using TEC.Core.ComponentModel;
 using TEC.Core.Sockets.Client;
+using Training.SocketCore.EventArguments;
 
 namespace Training.SocketCore
 {
@@ -21,7 +23,21 @@ namespace Training.SocketCore
             socketClientSettingCollection[SocketClientSettingEnum.OperationBufferSize] = 25;
             this.SocketClientInternal = new SocketClient<DataHolder>(new Mediator(), socketClientSettingCollection, false);
             this.SocketClientInternal.OnConnected += this.SocketClientInternal_OnConnected;
+            ((INotifyCollectionChanged)this.SocketClientInternal.ReadOnlyConnectedTokenIdCollection).CollectionChanged +=this. SocketClient_CollectionChanged;
             this.SocketClientInternal.inital();
+        }
+
+        private void SocketClient_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if(e.Action == NotifyCollectionChangedAction.Remove || e.Action== NotifyCollectionChangedAction.Reset)
+            {
+                e.OldItems.Cast<int>().ToList()
+                    .ForEach(tokenId => this.OnDisconnected?.Invoke(this, new DisconnectedSocketEventArgs(tokenId)));
+                //if (this.OnDisconnected != null)
+                //{
+                //    this.OnDisconnected(this, new DisconnectedSocketEventArgs(20));
+                //}
+            }
         }
 
         private void SocketClientInternal_OnConnected(object sender, ConnectedEventArgs e)
@@ -47,6 +63,7 @@ namespace Training.SocketCore
              );
         }
         public event EventHandler<ConnectedEventArgs> OnConnected;
+        public event EventHandler<DisconnectedSocketEventArgs> OnDisconnected;
         private SocketClient<DataHolder> SocketClientInternal { set; get; }
        
     }
