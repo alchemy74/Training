@@ -2,10 +2,12 @@ D:\Users\Yen\Documents\GitHub\Training\Training04\Training.SocketConsole\Trainin
 D:\Users\Yen\Documents\GitHub\Training\Training04\Training.SocketConsole\Training.SocketCore\bin\Debug\Training.SocketCore.dll
 D:\Users\Yen\Documents\GitHub\Training\Training04\Training.SocketConsole\Training.SocketCore\bin\Debug\Training.SocketCore.pdb
 D:\Users\Yen\Documents\GitHub\Training\Training04\Training.SocketConsole\Training.SocketCore\bin\Debug\Itenso.TimePeriod.dll
+D:\Users\Yen\Documents\GitHub\Training\Training04\Training.SocketConsole\Training.SocketCore\bin\Debug\Newtonsoft.Json.dll
 D:\Users\Yen\Documents\GitHub\Training\Training04\Training.SocketConsole\Training.SocketCore\bin\Debug\TEC.Core.dll
 D:\Users\Yen\Documents\GitHub\Training\Training04\Training.SocketConsole\Training.SocketCore\bin\Debug\TEC.Core.Portable.dll
 D:\Users\Yen\Documents\GitHub\Training\Training04\Training.SocketConsole\Training.SocketCore\bin\Debug\TEC.Core.Scheduler.dll
 D:\Users\Yen\Documents\GitHub\Training\Training04\Training.SocketConsole\Training.SocketCore\bin\Debug\TEC.Core.Sockets.dll
+D:\Users\Yen\Documents\GitHub\Training\Training04\Training.SocketConsole\Training.SocketCore\bin\Debug\Newtonsoft.Json.xml
 D:\Users\Yen\Documents\GitHub\Training\Training04\Training.SocketConsole\Training.SocketCore\bin\Debug\TEC.Core.xml
 D:\Users\Yen\Documents\GitHub\Training\Training04\Training.SocketConsole\Training.SocketCore\bin\Debug\TEC.Core.Portable.xml
 D:\Users\Yen\Documents\GitHub\Training\Training04\Training.SocketConsole\Training.SocketCore\bin\Debug\TEC.Core.Scheduler.xml
@@ -18,5 +20,3 @@ D:\Users\Yen\Documents\GitHub\Training\Training04\Training.SocketConsole\Trainin
 D:\Users\Yen\Documents\GitHub\Training\Training04\Training.SocketConsole\Training.SocketCore\obj\Debug\Training.SocketCore.dll
 D:\Users\Yen\Documents\GitHub\Training\Training04\Training.SocketConsole\Training.SocketCore\obj\Debug\Training.SocketCore.pdb
 D:\Users\Yen\Documents\GitHub\Training\Training04\Training.SocketConsole\Training.SocketCore\obj\Debug\Training.SocketCore.csprojResolveAssemblyReference.cache
-D:\Users\Yen\Documents\GitHub\Training\Training04\Training.SocketConsole\Training.SocketCore\bin\Debug\Newtonsoft.Json.dll
-D:\Users\Yen\Documents\GitHub\Training\Training04\Training.SocketConsole\Training.SocketCore\bin\Debug\Newtonsoft.Json.xml
